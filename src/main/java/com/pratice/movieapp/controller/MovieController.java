@@ -31,17 +31,17 @@ public class MovieController {
 	MovieService movieService;
 
 	@PostMapping(value = "", consumes = "application/json")
-//	@ResponseStatus(HttpStatus.CREATED)
+	// @ResponseStatus(HttpStatus.CREATED)
 	public ResponseEntity<?> insertMovie(@RequestBody Movie movie) {
-        log.info("Inside InsertMovie - Post");
+		log.info("Inside InsertMovie - Post");
 		try {
-			 Movie savedMovie = movieService.insertMovie(movie);
-			 return new ResponseEntity<>(savedMovie,HttpStatus.CREATED);
+			Movie savedMovie = movieService.insertMovie(movie);
+			return new ResponseEntity<>(savedMovie, HttpStatus.CREATED);
 		} catch (Exception e) {
-	       
-			String errorMessage=e.getMessage();
+
+			String errorMessage = e.getMessage();
 			e.printStackTrace();
-			return new ResponseEntity<>( errorMessage,HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<>(errorMessage, HttpStatus.BAD_REQUEST);
 		}
 
 	}
@@ -53,83 +53,75 @@ public class MovieController {
 		return movieService.getAllMovies();
 
 	}
-	
-	@GetMapping(value="/search", produces="application/json")
-	public List<Movie> findMovieByName(@RequestParam (name = "movieName",required = false) String name, 
-			@RequestParam (name = "actorName",required = false) String actorName) {
-		if (name!=null && actorName==null) {
-			  List<Movie> movieList =  movieService.findMovieByName(name);
-			    return movieList ;
-		}else if(name==null && actorName!=null){
-			  List<Movie> movieList = movieService.findMovieByActorName(actorName);
-			  return movieList;
-		
-		}
-		else if(name!=null && actorName!=null){
-			  List<Movie> movieList = movieService.findMovieByNameAndActorName(name, actorName);
-			  return movieList;
-		
+
+	@GetMapping(value = "/search", produces = "application/json")
+	public List<Movie> findMovieByName(@RequestParam(name = "movieName", required = false) String name,
+			@RequestParam(name = "actorName", required = false) String actorName) {
+		if (name != null && actorName == null) {
+			List<Movie> movieList = movieService.findMovieByName(name);
+			return movieList;
+		} else if (name == null && actorName != null) {
+			List<Movie> movieList = movieService.findMovieByActorName(actorName);
+			return movieList;
+
+		} else if (name != null && actorName != null) {
+			List<Movie> movieList = movieService.findMovieByNameAndActorName(name, actorName);
+			return movieList;
+
 		}
 		log.info("Inside FindAllByName - Get");
-	    return null;
-		
+		return null;
+
 	}
-	
-	
-	
-	
+
 	@DeleteMapping(value = "/{id}", produces = "application/json")
 	@ResponseStatus(HttpStatus.OK)
-	public void deleteMovie(@PathVariable("id") Long id ) {
+	public void deleteMovie(@PathVariable("id") Long id) {
 		log.info("Inside delete/id - Delete");
-		 movieService.deleteMovie(id);
+		movieService.deleteMovie(id);
 
 	}
-	
+
 	@PutMapping(value = "/{id}", consumes = "application/json")
-	@ResponseStatus(HttpStatus.OK)
-	public ResponseEntity<?> updateMovie(@RequestBody Movie movie ) {
+	// @ResponseStatus(HttpStatus.OK)
+	public ResponseEntity<?> updateMovie(@RequestBody Movie movie) {
 		log.info("Inside update movie - Put");
 		try {
-		 Movie updateMovie = movieService.updateMovie(movie);
-			return new ResponseEntity<>( updateMovie,HttpStatus.OK);
+			Movie updateMovie = movieService.updateMovie(movie);
+			return new ResponseEntity<>(updateMovie, HttpStatus.OK);
 		} catch (Exception e) {
-			String errorMessage=e.getMessage();
+			String errorMessage = e.getMessage();
 			e.printStackTrace();
-			return new ResponseEntity<>( errorMessage,HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<>(errorMessage, HttpStatus.BAD_REQUEST);
 		}
 
 	}
-	
-//	@GetMapping(value = "/{id}", produces = "application/json")
-//	public Movie getMovieById(@PathVariable("id") Long id ) {
-//		log.info("Inside delete/id - Get");
-//		return movieService.getMovieById(id);
-//
-//	}
-	
+
+	// @GetMapping(value = "/{id}", produces = "application/json")
+	// public Movie getMovieById(@PathVariable("id") Long id ) {
+	// log.info("Inside delete/id - Get");
+	// return movieService.getMovieById(id);
+	//
+	// }
+
 	@GetMapping(value = "/{id}", produces = "application/json")
-	public ResponseEntity<?> getMovieById(@PathVariable("id") Long id ) {
+	public ResponseEntity<?> getMovieById(@PathVariable("id") Long id) {
 		log.info("Inside Get Movie by id - Get");
-		 Movie movieById;
+		Movie movieById;
 		try {
 			movieById = movieService.getMovieById(id);
-			 if (movieById!= null) {
-				 return new ResponseEntity<>(movieById, HttpStatus.OK);
-			 }
-			 else {
-				 return new ResponseEntity<>( HttpStatus.NOT_FOUND);
-			 }
-			
+			if (movieById != null) {
+				return new ResponseEntity<>(movieById, HttpStatus.OK);
+			} else {
+				return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+			}
+
 		} catch (Exception e) {
-			String errorMessage=e.getMessage();
+			String errorMessage = e.getMessage();
 			e.printStackTrace();
-			return new ResponseEntity<>( errorMessage,HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<>(errorMessage, HttpStatus.BAD_REQUEST);
 		}
-		
 
 	}
-	
-	
-	
+
 }
